@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'betting/base.html' %}
 {% load static %}
 
 <!DOCTYPE html>
@@ -25,9 +25,7 @@
 <br><br>
 <div class="container">
     <div class="row">
-        <div class="col-md-2">
-
-        </div>
+        <div class="col-md-2"></div>
         <div class="col-md-8">
             <table class="table table-bordered table-dark">
                 <thead>
@@ -129,7 +127,7 @@
                 <ul class="pagination justify-content-center">
                     {% if bets.has_previous %}
                       <a class="btn btn-outline-dark mb-4" href="?page=1">First</a>
-                      <a class="btn btn-outline-dark mb-4" href="?page={{ bets.previous_page_number }}">Previous</a>
+                      <!--<a class="btn btn-outline-dark mb-4" href="?page={{ bets.previous_page_number }}">Previous</a>-->
                     {% endif %}
                     {% for num in bets.paginator.page_range %}
                         {% if bets.number == num %}
@@ -139,7 +137,7 @@
                         {% endif %}
                     {% endfor %}
                     {% if bets.has_next %}
-                        <a class="btn btn-outline-dark mb-4" href="?page={{ bets.next_page_number }}">Next</a>
+                        <!--<a class="btn btn-outline-dark mb-4" href="?page={{ bets.next_page_number }}">Next</a>-->
                         <a class="btn btn-outline-dark mb-4" href="?page={{ bets.paginator.num_pages }}">Last</a>
                     {% endif %}
                 </ul>

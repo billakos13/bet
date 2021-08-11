@@ -7,7 +7,8 @@ from django.db.models import Sum
 
 
 def index(request):
-    all_bets = Bet.objects.all().order_by('id')
+    user = request.user
+    all_bets = Bet.objects.filter(user=user).order_by('id')
     total_bets = Bet.objects.count()
     won_bets = Bet.objects.filter(profit__gt=0).count()
     lost_bets = Bet.objects.filter(profit__lt=0).count()
@@ -19,9 +20,7 @@ def index(request):
     last_month_profit = Bet.last_month()['profit__sum']
     last_3_months_profit = Bet.last_3_months()['profit__sum']
     longest_streak = Bet.longest_streak()
-
     paginator = Paginator(all_bets, 15)
-
     page_number = request.GET.get('page')
     bets = paginator.get_page(page_number)
 
@@ -39,7 +38,7 @@ def index(request):
         'last_3_months_profit':last_3_months_profit,
         'longest_streak':longest_streak,
     }
-    return render(request, 'index.html', context)
+    return render(request, 'betting/index.html', context)
 
 
 def create_bet(request):
@@ -50,7 +49,7 @@ def create_bet(request):
             form.save()
             return redirect('/')
     context = {'form':form}
-    return render(request, 'create-bet.html', context)
+    return render(request, 'betting/create-bet.html', context)
 
 
 def update_bet(request, pk):
@@ -62,7 +61,7 @@ def update_bet(request, pk):
             x.save()
             return redirect('/')
     context = {'x':x}
-    return render(request, 'update-bet.html', context)
+    return render(request, 'betting/update-bet.html', context)
 
 
 def delete_bet(request, pk):
@@ -71,7 +70,7 @@ def delete_bet(request, pk):
         bet.delete()
         return redirect('/')
     context = {'bet':bet}
-    return render(request, 'delete-bet.html', context)
+    return render(request, 'betting/delete-bet.html', context)
 
 
 

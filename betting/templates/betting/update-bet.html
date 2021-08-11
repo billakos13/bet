@@ -1,9 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'betting/base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 <form method="POST">
     {% csrf_token %}
-    {{ x.as_p }}
+    {{ x|crispy }}
     <input type="submit" value="Save"/>
 </form>
 {% endblock %}
