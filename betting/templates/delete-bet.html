@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<p>Σίγουρα θέλετε να διαγραφεί το στοίχημα {{ bet }};</p>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <button type="submit">Επιβεβαίωση</button>
+    <button onclick="location.href='{% url 'index' %}'" type="button">
+        Cancel
+    </button>
+</form>
+
+{% endblock %}

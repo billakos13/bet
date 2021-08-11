@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+{% block content %}
+
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <h2>Bet History</h2>
+        </div>
+    </div>
+</div>
+
+<br><br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+
+        </div>
+        <div class="col-md-8">
+            <table class="table table-bordered table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">Bets</th>
+                    <th scope="col">Won</th>
+                    <th scope="col">Push</th>
+                    <th scope="col">Lost</th>
+                    <th scope="col">Stake</th>
+                    <th scope="col">Returns</th>
+                    <th scope="col">Yield</th>
+                    <th scope="col">Bank</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ total_bets }}</td>
+                    <td>{{ won_bets }}</td>
+                    <td>{{ pushed_bets }}</td>
+                    <td>{{ lost_bets }}</td>
+                    <td>{{ total_stake }}</td>
+                    <td>{{ total_returns }}</td>
+                    <td>{{ yields|floatformat:3 }}</td>
+                    <td>{{ bank }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-2 text-center">
+            <h4>Add a bet</h4><a href="{% url 'create-bet' %}"><i class="fas fa-plus-circle fa-2x"></i></a>
+        </div>
+    </div>
+</div>
+
+
+<br/>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-2 ">
+
+            <div class="alert alert-success" role="alert">
+                <h3 class="alert-heading">Statistics</h3>
+                <hr>
+                <p>Last month: {{ last_month_profit }}</p>
+                <hr>
+                <p>Last 3 months: {{ last_3_months_profit }}</p>
+                <hr>
+                <p>Longest streak: {{ longest_streak }}</p>
+                <hr>
+            </div>
+
+        </div>
+        <div class="col-md text-center">
+            <table class="table table-striped"
+            ">
+            <thead>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Match</th>
+                <th scope="col">Bet</th>
+                <th scope="col">Odds</th>
+                <th scope="col">Stake</th>
+                <th scope="col">Book</th>
+                <th scope="col">Result</th>
+                <th scope="col">+/-</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for bet in bets %}
+            <tr>
+                <div class="row">
+                    <td>{{ bet.date_placed|date:'d/m/y' }}</td>
+                    <td>{{ bet.match }}</td>
+                    <td>{{ bet.pick }}</td>
+                    <td>{{ bet.odds }}</td>
+                    <td>{{ bet.stake }}</td>
+                    <td><img src="{% get_static_prefix %}images/{{ bet.bookie }}" style="width:50px;height:30px;"></td>
+                    <td>{{ bet.result }}</td>
+                    {% if bet.profit > 0 %}
+                        <td><a style="color:green;"> {{ bet.profit }} </a></td>
+                    {% elif bet.profit < 0 %}
+                        <td><a style="color:red;"> {{ bet.profit }} </a></td>
+                    {% else %}
+                        <td> {{ bet.profit }}</td>
+                    {% endif %}
+                    <td><a style="color:green;" href="{% url 'update-bet' bet.id %}"><i
+                            class="fas fa-edit fa-lg"></i></a></td>
+                    <td><a style="color:red;" href="{% url 'delete-bet' bet.id %}"><i
+                            class="fas fa-trash-alt fa-lg"></i></a></td>
+                </div>
+                {% endfor %}
+            </tr>
+            </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>
