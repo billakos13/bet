@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
 from .models import Bet
 from .forms import BetForm
 from django.db.models import Sum
@@ -6,7 +7,7 @@ from django.db.models import Sum
 
 
 def index(request):
-    bets = Bet.objects.all()
+    all_bets = Bet.objects.all().order_by('id')
     total_bets = Bet.objects.count()
     won_bets = Bet.objects.filter(profit__gt=0).count()
     lost_bets = Bet.objects.filter(profit__lt=0).count()
@@ -18,6 +19,12 @@ def index(request):
     last_month_profit = Bet.last_month()['profit__sum']
     last_3_months_profit = Bet.last_3_months()['profit__sum']
     longest_streak = Bet.longest_streak()
+
+    paginator = Paginator(all_bets, 15)
+
+    page_number = request.GET.get('page')
+    bets = paginator.get_page(page_number)
+
     context = {
         'bets':bets,
         'total_bets':total_bets,

@@ -1,6 +1,7 @@
 from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models import Sum
+from django.contrib.auth.models import User
 import datetime
 
 
@@ -63,6 +64,7 @@ class Bet(models.Model):
         ('opap.png', "opap"),
     ]
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     sport = models.CharField(max_length=100, choices=Sports)
     type = models.CharField(max_length=100, choices=AllTypeBets)
     date_placed = models.DateTimeField(auto_now_add=True)

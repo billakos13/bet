@@ -10,6 +10,7 @@
 <body>
 
 
+
 {% block content %}
 
 <br>
@@ -81,13 +82,13 @@
 
         </div>
         <div class="col-md text-center">
-            <table class="table table-striped"
+            <table id="fasi" class="table table-striped"
             ">
             <thead>
             <tr>
                 <th scope="col">Date</th>
                 <th scope="col">Match</th>
-                <th scope="col">Bet</th>
+                <th scope="col">Pick</th>
                 <th scope="col">Odds</th>
                 <th scope="col">Stake</th>
                 <th scope="col">Book</th>
@@ -107,11 +108,11 @@
                     <td><img src="{% get_static_prefix %}images/{{ bet.bookie }}" style="width:50px;height:30px;"></td>
                     <td>{{ bet.result }}</td>
                     {% if bet.profit > 0 %}
-                        <td><a style="color:green;"> {{ bet.profit }} </a></td>
+                    <td><a style="color:green;"> {{ bet.profit }} </a></td>
                     {% elif bet.profit < 0 %}
-                        <td><a style="color:red;"> {{ bet.profit }} </a></td>
+                    <td><a style="color:red;"> {{ bet.profit }} </a></td>
                     {% else %}
-                        <td> {{ bet.profit }}</td>
+                    <td> {{ bet.profit }}</td>
                     {% endif %}
                     <td><a style="color:green;" href="{% url 'update-bet' bet.id %}"><i
                             class="fas fa-edit fa-lg"></i></a></td>
@@ -122,9 +123,32 @@
             </tr>
             </tbody>
             </table>
+
+            <br>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    {% if bets.has_previous %}
+                      <a class="btn btn-outline-dark mb-4" href="?page=1">First</a>
+                      <a class="btn btn-outline-dark mb-4" href="?page={{ bets.previous_page_number }}">Previous</a>
+                    {% endif %}
+                    {% for num in bets.paginator.page_range %}
+                        {% if bets.number == num %}
+                            <a class="btn btn-dark mb-4" href="?page={{ num }}">{{ num }}</a>
+                        {% elif num > bets.number|add:'-3' and num < bets.number|add:'3' %}
+                            <a class="btn btn-outline-dark mb-4" href="?page={{ num }}">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+                    {% if bets.has_next %}
+                        <a class="btn btn-outline-dark mb-4" href="?page={{ bets.next_page_number }}">Next</a>
+                        <a class="btn btn-outline-dark mb-4" href="?page={{ bets.paginator.num_pages }}">Last</a>
+                    {% endif %}
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
+
 {% endblock %}
+
 </body>
 </html>
